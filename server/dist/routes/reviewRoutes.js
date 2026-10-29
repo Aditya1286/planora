@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const reviewController_1 = require("../controllers/reviewController");
+const auth_1 = require("../middleware/auth");
+const roles_1 = require("../middleware/roles");
+const router = (0, express_1.Router)();
+router.get('/event/:eventId', reviewController_1.getEventReviews);
+router.post('/', auth_1.authenticate, reviewController_1.createReview);
+router.post('/:reviewId/reply', auth_1.authenticate, (0, roles_1.authorizeRoles)('organizer', 'admin'), reviewController_1.replyToReview);
+exports.default = router;

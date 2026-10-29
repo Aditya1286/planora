@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const checkInController_1 = require("../controllers/checkInController");
+const auth_1 = require("../middleware/auth");
+const roles_1 = require("../middleware/roles");
+const validate_1 = require("../middleware/validate");
+const bookingValidators_1 = require("../validators/bookingValidators");
+const router = (0, express_1.Router)();
+router.use(auth_1.authenticate, (0, roles_1.authorizeRoles)('organizer', 'admin'));
+router.post('/verify', (0, validate_1.validateRequest)(bookingValidators_1.checkInSchema), checkInController_1.verifyTicket);
+router.post('/check-in', (0, validate_1.validateRequest)(bookingValidators_1.checkInSchema), checkInController_1.checkInAttendee);
+router.get('/stats/:eventId', checkInController_1.getCheckInStats);
+exports.default = router;

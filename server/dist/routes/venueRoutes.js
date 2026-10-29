@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const venueController_1 = require("../controllers/venueController");
+const auth_1 = require("../middleware/auth");
+const roles_1 = require("../middleware/roles");
+const router = (0, express_1.Router)();
+router.get('/', venueController_1.getVenues);
+router.post('/', auth_1.authenticate, (0, roles_1.authorizeRoles)('admin', 'organizer'), venueController_1.createVenue);
+exports.default = router;

@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-beige: #E8DCC8;
+    --color-blue: #0047AB;
+    --color-yellow: #FFC93C;
+    --color-ivory: #FBF7EE;
+    --color-ink: #1A1A2E;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    color: var(--color-ink);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FBF7EE;
+}
+::-webkit-scrollbar-thumb {
+  background: #DECDB6;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0047AB;
+}
+
+/* Card hover animation */
+.card-hover-effect {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover-effect:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -4px rgba(26, 26, 46, 0.12);
+}

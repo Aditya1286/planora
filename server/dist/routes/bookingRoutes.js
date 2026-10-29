@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const bookingController_1 = require("../controllers/bookingController");
+const auth_1 = require("../middleware/auth");
+const roles_1 = require("../middleware/roles");
+const validate_1 = require("../middleware/validate");
+const bookingValidators_1 = require("../validators/bookingValidators");
+const router = (0, express_1.Router)();
+router.post('/', auth_1.authenticate, (0, validate_1.validateRequest)(bookingValidators_1.createBookingSchema), bookingController_1.createBooking);
+router.get('/my', auth_1.authenticate, bookingController_1.getMyBookings);
+router.get('/reference/:reference', auth_1.authenticate, bookingController_1.getBookingByReference);
+router.post('/:id/cancel', auth_1.authenticate, (0, validate_1.validateRequest)(bookingValidators_1.cancelBookingSchema), bookingController_1.cancelBooking);
+router.get('/event/:eventId', auth_1.authenticate, (0, roles_1.authorizeRoles)('organizer', 'admin'), bookingController_1.getEventBookings);
+router.get('/event/:eventId/calendar.ics', bookingController_1.downloadCalendarIcs);
+exports.default = router;
