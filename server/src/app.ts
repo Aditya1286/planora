@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import mongoose from 'mongoose';
+import path from 'path';
 import { ENV } from './config/env';
 import apiRouter from './routes';
 import { errorHandler } from './middleware/errorHandler';
@@ -77,6 +78,14 @@ app.get('/api/health', (_req, res) => {
 
 // API Routes
 app.use('/api', apiRouter);
+
+if (ENV.NODE_ENV === 'production') {
+  const clientDistPath = path.resolve(__dirname, '../../client/dist');
+  app.use(express.static(clientDistPath));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
 
 // Error Handler
 app.use(errorHandler);

@@ -173,6 +173,15 @@ DEMO_EMAIL_LOG=true
 
 The Vercel build uses `/api` automatically, so the browser calls the API on the same domain. Run the seed command locally against the production database only when you intentionally want to create the demo accounts.
 
+For hosts that deploy one Node/Express web service, use the repository root (`.`) rather than importing `client` and `server` as separate services:
+
+```text
+Build command: npm install && npm --prefix server install && npm --prefix client install && npm run build
+Start command: npm start
+```
+
+Set `NODE_ENV=production`, `PORT` to the host-provided port, and the same MongoDB/JWT variables above. In production, Express serves the React files from `client/dist` and handles both the website and `/api` routes on one domain.
+
 ---
 
 ## 📋 Mandatory Verification Checklist Results
