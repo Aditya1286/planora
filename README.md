@@ -167,6 +167,8 @@ The repository includes [`vercel.json`](./vercel.json) using Vercel's current Se
 
 Import the repository with the root directory set to `./`. Do not import `client` or `server` as separate Vercel projects. Vercel builds each service independently and the top-level routes send `/api/*` to the backend and all other paths to the frontend.
 
+The service install commands use `npm install --include=dev` because the frontend and backend build tools (`vite`, `typescript`, and their type packages) are development dependencies required during the build.
+
 Add these environment variables to the Vercel project:
 
 ```text
