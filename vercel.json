@@ -3,7 +3,7 @@
     "frontend": {
       "root": "client",
       "framework": "vite",
-      "installCommand": "npm install --include=dev",
+      "installCommand": "npm ci --include=dev",
       "buildCommand": "npm run build",
       "outputDirectory": "dist",
       "rewrites": [
@@ -16,7 +16,7 @@
     "backend": {
       "root": "server",
       "framework": "express",
-      "installCommand": "npm install --include=dev",
+      "installCommand": "npm ci --include=dev",
       "buildCommand": "npm run build",
       "entrypoint": "src/serverless.ts"
     }
