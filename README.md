@@ -158,9 +158,16 @@ npm run dev
 
 Open your browser at `http://localhost:5173`. The server runs at `http://localhost:8000` with the included development environment configuration.
 
-### Vercel Deployment
+### Vercel Services Deployment
 
-The repository includes [`vercel.json`](./vercel.json) to deploy the client and Express API as one Vercel project. Import the repository into Vercel without changing the root directory. Add these environment variables in the Vercel project settings:
+The repository includes [`vercel.json`](./vercel.json) using Vercel's current Services configuration. It defines two services inside one Vercel project:
+
+- `frontend`: the Vite application rooted at `client`
+- `backend`: the Express API rooted at `server`
+
+Import the repository with the root directory set to `./`. Do not import `client` or `server` as separate Vercel projects. Vercel builds each service independently and the top-level routes send `/api/*` to the backend and all other paths to the frontend.
+
+Add these environment variables to the Vercel project:
 
 ```text
 MONGODB_URI=your MongoDB Atlas connection string
@@ -171,13 +178,21 @@ DEMO_PAYMENT_MODE=true
 DEMO_EMAIL_LOG=true
 ```
 
-The Vercel build uses `/api` automatically, so the browser calls the API on the same domain. Run the seed command locally against the production database only when you intentionally want to create the demo accounts.
+The frontend uses `VITE_API_URL=/api`, so browser requests stay on the shared domain. The backend entrypoint is `server/src/serverless.ts`; it reuses MongoDB connections and does not start a persistent listener. The existing `server/src/index.ts` remains the local development entrypoint.
 
-For hosts that deploy one Node/Express web service, use the repository root (`.`) rather than importing `client` and `server` as separate services:
+Vercel's Services configuration is not the same as a normal single-project `buildCommand`/`outputDirectory` configuration. Those settings are scoped inside each service in [`vercel.json`](./vercel.json).
 
-```text
-Build command: npm install && npm --prefix server install && npm --prefix client install && npm run build
-Start command: npm start
+Run the seed command locally against the production database only when you intentionally want to create the demo accounts.
+
+There are no Clerk or Cloudinary variables in this repository. Do not add them unless those integrations are implemented.
+
+If you build locally on Windows PowerShell, run commands separately:
+
+```powershell
+npm install
+npm --prefix server install
+npm --prefix client install
+npm run build
 ```
 
 Set `NODE_ENV=production`, `PORT` to the host-provided port, and the same MongoDB/JWT variables above. In production, Express serves the React files from `client/dist` and handles both the website and `/api` routes on one domain.

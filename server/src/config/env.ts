@@ -1,12 +1,22 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+const getSecret = (name: string, developmentValue: string): string => {
+  const value = process.env[name];
+  if (isProduction && !value) {
+    throw new Error(`[Config] ${name} must be set in production.`);
+  }
+  return value || developmentValue;
+};
+
 export const ENV = {
   PORT: process.env.PORT || 8000,
   NODE_ENV: process.env.NODE_ENV || 'development',
-  MONGODB_URI: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/planora',
-  JWT_SECRET: process.env.JWT_SECRET || 'planora_super_secret_jwt_access_key_2026_dev',
-  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || 'planora_super_secret_jwt_refresh_key_2026_dev',
+  MONGODB_URI: getSecret('MONGODB_URI', 'mongodb://127.0.0.1:27017/planora'),
+  JWT_SECRET: getSecret('JWT_SECRET', 'planora_super_secret_jwt_access_key_2026_dev'),
+  JWT_REFRESH_SECRET: getSecret('JWT_REFRESH_SECRET', 'planora_super_secret_jwt_refresh_key_2026_dev'),
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '1d',
   JWT_REFRESH_EXPIRES_IN: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',

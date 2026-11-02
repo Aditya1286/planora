@@ -1,11 +1,38 @@
 {
-  "installCommand": "npm install && npm --prefix server install && npm --prefix client install",
-  "buildCommand": "npm run build:client",
-  "outputDirectory": "client/dist",
+  "services": {
+    "frontend": {
+      "root": "client",
+      "framework": "vite",
+      "installCommand": "npm install",
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist",
+      "rewrites": [
+        {
+          "source": "/(.*)",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    "backend": {
+      "root": "server",
+      "framework": "express",
+      "installCommand": "npm install",
+      "buildCommand": "npm run build",
+      "entrypoint": "dist/serverless.js"
+    }
+  },
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": {
+        "service": "frontend"
+      }
     }
   ]
 }

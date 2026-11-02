@@ -14,3 +14,5 @@ export const handleServerlessRequest = async (req: Request, res: Response): Prom
     });
   }
 };
+
+export default handleServerlessRequest;
