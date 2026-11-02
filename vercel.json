@@ -18,7 +18,7 @@
       "framework": "express",
       "installCommand": "npm install",
       "buildCommand": "npm run build",
-      "entrypoint": "dist/serverless.js"
+      "entrypoint": "src/serverless.ts"
     }
   },
   "rewrites": [

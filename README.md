@@ -178,7 +178,7 @@ DEMO_PAYMENT_MODE=true
 DEMO_EMAIL_LOG=true
 ```
 
-The frontend uses `VITE_API_URL=/api`, so browser requests stay on the shared domain. The backend entrypoint is `server/src/serverless.ts`; it reuses MongoDB connections and does not start a persistent listener. The existing `server/src/index.ts` remains the local development entrypoint.
+The frontend uses `VITE_API_URL=/api`, so browser requests stay on the shared domain. The backend service entrypoint is `server/src/serverless.ts` (configured as `src/serverless.ts` relative to the backend service root); it reuses MongoDB connections and does not start a persistent listener. The existing `server/src/index.ts` remains the local development entrypoint.
 
 Vercel's Services configuration is not the same as a normal single-project `buildCommand`/`outputDirectory` configuration. Those settings are scoped inside each service in [`vercel.json`](./vercel.json).
 
