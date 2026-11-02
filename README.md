@@ -118,7 +118,7 @@ npm --prefix client install
 
 ```bash
 # Server (.env)
-PORT=5000
+PORT=8000
 NODE_ENV=development
 MONGODB_URI=mongodb://127.0.0.1:27017/planora
 JWT_SECRET=planora_super_secret_jwt_access_key_2026_dev
@@ -128,7 +128,8 @@ DEMO_PAYMENT_MODE=true
 DEMO_EMAIL_LOG=true
 
 # Client (.env)
-VITE_API_URL=http://localhost:5000/api
+# Use /api for a single-domain deployment (such as Vercel).
+VITE_API_URL=/api
 ```
 
 ### 3. Seed the Database
@@ -151,11 +152,26 @@ npm test
 
 ### 6. Launch the Platform
 ```bash
-# Run both server (port 5000) and client (port 5173) concurrently:
+# Run both server (port 8000) and client (port 5173) concurrently:
 npm run dev
 ```
 
-Open your browser at `http://localhost:5173`.
+Open your browser at `http://localhost:5173`. The server runs at `http://localhost:8000` with the included development environment configuration.
+
+### Vercel Deployment
+
+The repository includes [`vercel.json`](./vercel.json) to deploy the client and Express API as one Vercel project. Import the repository into Vercel without changing the root directory. Add these environment variables in the Vercel project settings:
+
+```text
+MONGODB_URI=your MongoDB Atlas connection string
+JWT_SECRET=your production access-token secret
+JWT_REFRESH_SECRET=your production refresh-token secret
+CLIENT_URL=https://your-project.vercel.app
+DEMO_PAYMENT_MODE=true
+DEMO_EMAIL_LOG=true
+```
+
+The Vercel build uses `/api` automatically, so the browser calls the API on the same domain. Run the seed command locally against the production database only when you intentionally want to create the demo accounts.
 
 ---
 
